@@ -92,4 +92,4 @@
 		}
 	}
 
-/* End of file inline_css.php */
+/* End of file instyle.php */
