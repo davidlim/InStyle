@@ -1,0 +1,9 @@
+InStyle: Embedded CSS to Inline CSS Converter
+Version 0.2
+David Lim
+Updated 12/4/2009
+
+README - This text file describing the InStyle tool.
+index.php - Script that accepts a URL of a HTML page and calls the InStyle object to convert embedded CSS to inline CSS.
+instyle.php - Class that extracts CSS from a HTML page and converts the embedded CSS to inline CSS.
+simple_html_dom.php - PHP class by S.C. Chen that provides a way to navigate the DOM. Used to apply the styles inline.
