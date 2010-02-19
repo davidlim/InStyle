@@ -80,6 +80,9 @@
 					foreach ($html_dom->find($selector) as $element) {
 						// Check to make sure the style doesn't already exist
 						if (!stristr($element->style, $styling)) {
+							if (strlen($element->style) > 0 && substr(rtrim($element->style),-1) !== ';') {
+								$element->style .= ';';
+							}
 							// If there is any existing style, this will append to it
 							$element->style .= $styling;
 						}
