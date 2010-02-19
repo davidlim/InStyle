@@ -4,7 +4,7 @@
 	* Embedded CSS to Inline CSS Converter Class
 	* @version 0.2
 	* @updated 12/04/2009
-	* 
+	*
 	* @author David Lim
 	* @email miliak@orst.edu
 	* @link http://davidandjennilyn.com/instyle
@@ -13,7 +13,7 @@
 	* @requirements: PHP 4.3+
 	*
 	* InStyle is provided AS-IS.
-	*/ 
+	*/
 
 	class InStyle {
 
@@ -21,7 +21,7 @@
 			// Debug mode
 			// Debug mode will output selectors and styles that are detected in the embedded CSS
 			$debug = false;
-	
+
 
 			// Extract the CSS
 			preg_match('/<style[^>]+>(?<css>[^<]+)<\/style>/s', $document, $matches);
@@ -30,7 +30,7 @@
 			$css = preg_replace("/[\n\r\t]+/s", "", $matches['css']);
 
 			// Extract each CSS declaration
-			preg_match_all('/([a-zA-Z0-9_ ,#\.]+){([^}]+)}/s', $css, $rules, PREG_SET_ORDER);
+			preg_match_all('/([-a-zA-Z0-9_ ,#\.]+){([^}]+)}/s', $css, $rules, PREG_SET_ORDER);
 
 			// For each CSS declaration, make the selector and style declaration into an array
 			// Array index 1 is the CSS selector
@@ -40,7 +40,7 @@
 				if (strstr($rule['1'], ',')) {
 					// Strip out spaces after a comma for consistency
 					$rule['1'] = str_replace(', ', ',', $rule['1']);
-					
+
 					// Unset any previous combos
 					unset($selectors);
 
@@ -50,7 +50,7 @@
 					foreach($selectors as $selector) {
 						$styles[trim($selector)] .= trim($rule['2']);
 						if ($debug) { echo trim($selector) . ' { ' . trim($rule['2']) . ' }<br/>'; }
-					}				
+					}
 				} else {
 					$styles[trim($rule['1'])] .= trim($rule['2']);
 					if ($debug) { echo trim($rule['1']) . ' { ' . trim($rule['2']) . ' }<br/>'; }
