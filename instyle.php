@@ -1,23 +1,34 @@
 <?php
 	/**
-	* InStyle
-	* Embedded CSS to Inline CSS Converter Class
-	* @version 0.2
-	* @updated 12/04/2009
-	*
-	* @author David Lim
-	* @email miliak@orst.edu
-	* @link http://davidandjennilyn.com/instyle
-	* @acknowledgements Simple HTML DOM
-	* @description This class will extract the embedded CSS of a HTML file and apply the styles inline.
-	* @requirements: PHP 4.3+
-	*
-	* InStyle is provided AS-IS.
-	*/
+	 * InStyle
+	 * Embedded CSS to Inline CSS Converter Class
+	 * @version 0.2.1
+	 * @updated 12/04/2010
+	 *
+	 * @author David Lim
+	 * @email miliak@orst.edu
+	 * @link http://davidandjennilyn.com/instyle
+	 * @acknowledgements Simple HTML DOM
+	 * @description This class will extract the embedded CSS of a HTML file and apply the styles inline.
+	 * @requirements: PHP 4.3+
+	 *
+	 * InStyle is provided AS-IS.
+	 *
+	 * InStyle Fork info:
+	 * @author Andrey Subbota
+	 * @email subbota@gmail.com
+	 * @link http://github.com/numbata/InStyle
+	 */
 
 	class InStyle {
 
-		function convert($document) {
+		/**
+		 * Convert Embedded CSS to Inline
+		 * @param string $document
+		 * @param bool $strip_class strip attribute class
+		 */
+
+		function convert($document, $strip_class = false) {
 			// Debug mode
 			// Debug mode will output selectors and styles that are detected in the embedded CSS
 			$debug = false;
@@ -93,7 +104,7 @@
 					foreach ($html_dom->find($selector) as $element) {
 						// Check to make sure the style doesn't already exist
 						if (!stristr($element->style, $styling)) {
-							if (strlen($element->style) > 0 && substr(rtrim($element->style),-1) !== ';') {
+							if (strlen($element->style) > 0 && substr(rtrim($element->style), -1) !== ';') {
 								$element->style .= ';';
 							}
 							// If there is any existing style, this will append to it
@@ -102,8 +113,15 @@
 					}
 				}
 				$inline_css_message = $html_dom->save();
+
+				// Strip class attribute
+				if ($strip_class === true) {
+					$inline_css_message = preg_replace('~(<[a-z0-0][^>]*)(\s(?:class|id)\s*=\s*(([\'"]).*?\4|[^\s]*))~usi', '\1', $inline_css_message);
+				}
+
 				return $inline_css_message;
 			}
+
 			return false;
 		}
 	}
