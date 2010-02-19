@@ -26,6 +26,11 @@
 			// Extract the CSS
 			preg_match('/<style[^>]+>(?<css>[^<]+)<\/style>/s', $document, $matches);
 
+			// If no CSS style
+			if (empty($matches)){
+				return $document;
+			}
+
 			// Strip out extra newlines and tabs from CSS
 			$css = preg_replace("/[\n\r\t]+/s", "", $matches['css']);
 
@@ -48,12 +53,20 @@
 					// Create a separate array element in styles array for each declaration
 					$selectors = explode(',', $rule['1']);
 					foreach($selectors as $selector) {
-						$styles[trim($selector)] .= trim($rule['2']);
-						if ($debug) { echo trim($selector) . ' { ' . trim($rule['2']) . ' }<br/>'; }
+						$selector = trim($selector);
+						if (!isset($styles[$selector])) {
+							$styles[$selector] ='';
+						}
+						$styles[$selector] .= trim($rule['2']);
+						if ($debug) { echo $selector . ' { ' . trim($rule['2']) . ' }<br/>'; }
 					}
 				} else {
-					$styles[trim($rule['1'])] .= trim($rule['2']);
-					if ($debug) { echo trim($rule['1']) . ' { ' . trim($rule['2']) . ' }<br/>'; }
+					$selector = trim($rule['1']);
+					if (!isset($styles[$selector])) {
+						$styles[$selector] = '';
+					}
+					$styles[$selector] .= trim($rule['2']);
+					if ($debug) { echo $selector . ' { ' . trim($rule['2']) . ' }<br/>'; }
 				}
 			}
 
