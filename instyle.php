@@ -91,15 +91,16 @@
 				echo '</pre><hr/>';
 			}
 
-			// Load Simple HTML DOM helper
-			require_once('simple_html_dom.php');
-			$html_dom = new simple_html_dom();
-
-			// Load in the HTML without the head and style definitions
-			$html_dom->load(preg_replace('/\<head\>(.+?)\<\/head>/s', '', $document));
-
 			// For each style declaration, find the selector in the HTML and add the inline CSS
 			if (!empty($styles)) {
+
+				// Load Simple HTML DOM helper
+				require_once('simple_html_dom.php');
+				$html_dom = new simple_html_dom();
+
+				// Load in the HTML without the head and style definitions
+				$html_dom->load(preg_replace('/\<head\>(.+?)\<\/head>/s', '', $document));
+
 				foreach ($styles as $selector=>$styling) {
 					foreach ($html_dom->find($selector) as $element) {
 						// Check to make sure the style doesn't already exist
@@ -118,6 +119,8 @@
 				if ($strip_class === true) {
 					$inline_css_message = preg_replace('~(<[a-z0-0][^>]*)(\s(?:class|id)\s*=\s*(([\'"]).*?\4|[^\s]*))~usi', '\1', $inline_css_message);
 				}
+
+				$html_dom->__destruct();
 
 				return $inline_css_message;
 			}
