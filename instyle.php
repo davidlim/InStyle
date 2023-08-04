@@ -9,7 +9,7 @@
 	 * @email miliak@orst.edu
 	 * @link http://davidandjennilyn.com/instyle
 	 * @acknowledgements Simple HTML DOM
-	 * @description This class will extract the embedded CSS of a HTML file and apply the styles inline.
+	 * @description This class will extract the embedded CSS of an HTML file and apply the styles inline.
 	 * @requirements: PHP 4.3+
 	 *
 	 * InStyle is provided AS-IS.
@@ -26,6 +26,7 @@
 		 * Convert Embedded CSS to Inline
 		 * @param string $document
 		 * @param bool $strip_class strip attribute class
+		 * @return string|false
 		 */
 
 		function convert($document, $strip_class = false) {
@@ -38,7 +39,7 @@
 			preg_match('/<style[^>]+>(?<css>[^<]+)<\/style>/s', $document, $matches);
 
 			// If no CSS style
-			if (empty($matches)){
+			if (empty($matches)) {
 				return $document;
 			}
 
@@ -51,6 +52,7 @@
 			// For each CSS declaration, make the selector and style declaration into an array
 			// Array index 1 is the CSS selector
 			// Array index 2 is the CSS rule(s)
+			$styles = array();
 			foreach ($rules as $rule) {
 				// If the CSS selector is multiple, we should split them up
 				if (strstr($rule['1'], ',')) {
@@ -92,7 +94,7 @@
 			}
 
 			// For each style declaration, find the selector in the HTML and add the inline CSS
-			if (!empty($styles)) {
+			if (count($styles) > 0) {
 
 				// Load Simple HTML DOM helper
 				require_once('simple_html_dom.php');
